@@ -137,5 +137,6 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
-    'https://qfsci-6047a.web.app'
+    'https://qfsci-6047a.web.app',
+    'http://localhost:3000',
 ]
