@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'QFSci_manager',
     'rest_framework',
     'knox',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -50,6 +51,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'QFSci_manager.User'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -132,3 +134,8 @@ USE_TZ = True
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'https://qfsci-6047a.web.app'
+]
