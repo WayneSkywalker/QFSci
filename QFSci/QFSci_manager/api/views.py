@@ -295,6 +295,23 @@ class CreateActivityAPI(generics.CreateAPIView):
             return serializer.save()
         raise PermissionDenied('Cannot create an activity. Because you are not a staff.')
 
+class QFsList(generics.ListAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    filter_backends = (DynamicSearchFilter,)
+    queryset = QF.objects.all()
+    serializer_class = QFSerializer
+
+class QFDetail(generics.RetrieveAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    queryset = QF.objects.all()
+    serializer_class = QFSerializer
+
 class EvaluateQFStudentAPI(generics.CreateAPIView):
     permission_classes = [
         permissions.IsAuthenticated

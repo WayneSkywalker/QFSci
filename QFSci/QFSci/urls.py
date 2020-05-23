@@ -3,6 +3,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('qfsci_manager.api.urls_info')),
-    path('', include('qfsci_manager.api.urls_user')),
+    path('', include('QFSci_manager.api.urls_info')),
+    path('', include('QFSci_manager.api.urls_user')),
 ]

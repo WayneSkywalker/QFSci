@@ -3,6 +3,7 @@ from .views import UserViewSet, AdvisorViewSet, StudentViewSet, StaffViewSet, QF
 
 router = routers.DefaultRouter()
 
+router.register('api/admin/users', UserViewSet, 'users')
 router.register('api/admin/students', StudentViewSet, 'students')
 router.register('api/admin/advisors', AdvisorViewSet, 'advisors')
 router.register('api/admin/staffs', StaffViewSet, 'staffs')

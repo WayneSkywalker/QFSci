@@ -5,7 +5,7 @@ from .views import ActivityList, ActivityDetail, CreateActivityAPI, ActivityHour
 from .views import QFsInOneActivityAPI, QFGotActivityList, QFGotActivityYearList, ActivityQFStatAPI, ActivityQFYearStatAPI
 from .views import ActivityBudgetYearAPI, MostBudgetUsedActivities, ActivityBudgetLastSixYearsAPI
 from .views import AdvisedStudentsList, AdvisedStudentProfile, AdvisedStudentParticipationStatAPI
-from .views import QFStudentGainAPI, QFStudentYearGainAPI
+from .views import QFsList, QFDetail, QFStudentGainAPI, QFStudentYearGainAPI
 from .views import StudentQFAllStatAPI, StudentQFFacultyStatAPI, StudentQFDepartmentStatAPI, StudentQFYearStatAPI
 from .views import StudentQFDepartmentYearStatAPI, StudentQFFacultyYearStatAPI, StudentParticipantAllStatAPI
 from .views import StudentParticipantFacultyStatAPI, StudentParticipationDepartmentStatAPI, StudentParticipantYearStatAPI
@@ -58,4 +58,6 @@ urlpatterns = [
     path('api/activity/create', CreateActivityAPI.as_view()),
     path('api/activity/got-QF/<str:QFID>', QFGotActivityList.as_view()),
     path('api/activity/got-QF/<str:QFID>/<int:year>', QFGotActivityYearList.as_view()),
+    path('api/QF', QFsList.as_view()),
+    path('api/QF/<str:pk>', QFDetail.as_view()),
 ]
