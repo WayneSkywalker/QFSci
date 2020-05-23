@@ -26,7 +26,7 @@ SECRET_KEY = '2br!3(0lq1@t4if4x=!%!_mhr3y^5_m2d6ak3bticek3r1t$5_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://qfsci.herokuapp.com/']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
