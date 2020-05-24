@@ -383,9 +383,11 @@ class ActivityHoursYearsAPI(generics.ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs['pk']
-        student = Student.objects.get(pk = pk)
-        return student.join_activity.values('year').annotate(activity_hours_gain = Sum('activity_hour'),\
-            activity_hours_need =  25 - Sum('activity_hour')).order_by()
+        if Student.objects.filter(studentID = pk).exists():
+            student = Student.objects.get(pk = pk)
+            return student.join_activity.values('year').annotate(activity_hours_gain = Sum('activity_hour'),\
+                activity_hours_need =  25 - Sum('activity_hour')).order_by()
+        raise ParseError('This student does not exist.')
 
 class QFStudentGainAPI(generics.ListAPIView):
     permission_classes = [
@@ -485,7 +487,7 @@ class QFsInOneActivityAPI(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         if Activity.objects.filter(id = pk).exists():
-            return Activity.objects.get(pk = pk).QFs.all() # ERROR_500 if doesn't match any query
+            return Activity.objects.get(pk = pk).QFs.all()
         raise ParseError('This activity does not exist.')
 
 class QFGotActivityList(generics.ListAPIView):
