@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from QFSci_manager.models import User, Student, Advisor, Staff, Activity, QF, Evaluate_QF_student, Evaluate_QF_activity
+from knox.models import AuthToken
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -39,7 +40,9 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         user = authenticate(**data)
         if user and user.is_active:
-            return user
+            if not AuthToken.objects.filter(user = user).exists():
+                return user
+            raise serializers.ValidationError("This user is already logged in.")
         raise serializers.ValidationError("Incorrect Credentials")
 
 # User Serializer for editing advisor and staff information

@@ -173,8 +173,8 @@ class StaffRegisterAPI(generics.GenericAPIView):
 class AdminRegisterAPI(generics.GenericAPIView):
     permission_classes = [
         #permissions.IsAuthenticated
-        permissions.AllowAny
-        #permissions.IsAdminUser
+        #permissions.AllowAny
+        permissions.IsAdminUser
     ]
     serializer_class = StaffAdminRegisterSerializer
 
