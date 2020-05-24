@@ -1,7 +1,7 @@
 from QFSci_manager.models import User, Student, Advisor, Staff, Activity, QF, Evaluate_QF_student, Evaluate_QF_activity
 from rest_framework import viewsets, permissions, generics, filters
 from rest_framework.response import Response
-from rest_framework.exceptions import APIException, ParseError, PermissionDenied
+from rest_framework.exceptions import APIException, ParseError, PermissionDenied, NotFound
 from .serializers import UserSerializer, AdvisorSerializer, StudentSerializer, StaffSerializer, QFSerializer, ActivitySerializer
 from .serializers import ActivityHoursSerializer, ActivityHoursYearSerializer, QFStudentGainSerializer, ActivityQFSerializer, ActivityQFStatSerializer
 from .serializers import StudentQFStatSerializer, StudentParticipantStatSerializer
@@ -387,7 +387,7 @@ class ActivityHoursYearsAPI(generics.ListAPIView):
             student = Student.objects.get(pk = pk)
             return student.join_activity.values('year').annotate(activity_hours_gain = Sum('activity_hour'),\
                 activity_hours_need =  25 - Sum('activity_hour')).order_by()
-        raise ParseError('This student does not exist.')
+        raise NotFound('This student does not exist.')
 
 class QFStudentGainAPI(generics.ListAPIView):
     permission_classes = [
@@ -488,7 +488,7 @@ class QFsInOneActivityAPI(generics.ListAPIView):
         pk = self.kwargs['pk']
         if Activity.objects.filter(id = pk).exists():
             return Activity.objects.get(pk = pk).QFs.all()
-        raise ParseError('This activity does not exist.')
+        raise NotFound('This activity does not exist.')
 
 class QFGotActivityList(generics.ListAPIView):
     permission_classes = [
