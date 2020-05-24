@@ -484,7 +484,9 @@ class QFsInOneActivityAPI(generics.ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs['pk']
-        return Activity.objects.get(pk = pk).QFs.all() # ERROR_500 if doesn't match any query
+        if Activity.objects.filter(id = pk).exists():
+            return Activity.objects.get(pk = pk).QFs.all() # ERROR_500 if doesn't match any query
+        raise ParseError('This activity does not exist.')
 
 class QFGotActivityList(generics.ListAPIView):
     permission_classes = [
