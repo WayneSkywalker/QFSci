@@ -12,7 +12,7 @@ from .views import StudentParticipantFacultyStatAPI, StudentParticipationDepartm
 from .views import StudentParticipantDepartmentYearStatAPI, StudentParticipantFacultyYearStatAPI
 from .views import EvaluateQFStudentAPI, EvaluateQFActivityAPI
 from .views import ChangePasswordAPI, ActivityHoursUserAPI, ActivityHoursYearsUserAPI, QFStudentGainUserAPI, QFStudentYearGainUserAPI
-# from .views import ActivityHoursYearUserAPI_test
+from .views import ActivityHoursYearUserAPI_test
 from knox import views as knox_views
 
 urlpatterns = [
@@ -33,7 +33,7 @@ urlpatterns = [
     path('api/student/activity-hours', ActivityHoursUserAPI.as_view()),
     path('api/student/activity-hours-per-year/<str:pk>', ActivityHoursYearsAPI.as_view()),
     path('api/student/activity-hours-per-year', ActivityHoursYearsUserAPI.as_view()),
-    # path('api/student/activity-hours-per-year-test', ActivityHoursYearUserAPI_test.as_view()), ############################
+    path('api/student/activity-hours-per-year-test', ActivityHoursYearUserAPI_test.as_view()), ############################
     path('api/student/QF/<str:pk>', QFStudentGainAPI.as_view()),
     path('api/student/QF', QFStudentGainUserAPI.as_view()),
     path('api/student/QF/<str:pk>/<int:year>', QFStudentYearGainAPI.as_view()),
