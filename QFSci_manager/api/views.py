@@ -398,7 +398,7 @@ class ActivityHoursAPI(generics.RetrieveAPIView):
     def get_queryset(self):
         return Student.objects.annotate(activity_hours = Sum('join_activity__activity_hour'))
 
-class ActivityHoursUserAPI(generics.RetrieveAPIView):
+class ActivityHoursUserAPI(generics.RetrieveAPIView): #
     permission_classes = [
         permissions.IsAuthenticated
         #permissions.AllowAny
@@ -408,7 +408,7 @@ class ActivityHoursUserAPI(generics.RetrieveAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Student.objects.filter(user = user).annotate(activity_hours = Sum('join_activity__activity_hour'))
+        return Student.objects.annotate(activity_hours = Sum('join_activity__activity_hour')).get(user = user)
 
 class ActivityHoursYearsAPI(generics.ListAPIView):
     permission_classes = [
@@ -482,7 +482,7 @@ class QFStudentYearGainAPI(generics.ListAPIView):
         return  QF.objects.annotate(gain = Count('activity_qf',filter = Q(activity_qf__joined_students__studentID = pk)\
             & Q(activity_qf__year = year))).values('QF_name','gain')
 
-class QFStudentYearGainUserAPI(generics.ListAPIView):
+class QFStudentYearGainUserAPI(generics.ListAPIView): #
     permission_classes = [
         permissions.IsAuthenticated
         #permissions.AllowAny
