@@ -492,9 +492,8 @@ class QFStudentYearGainUserAPI(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        studentID = Student.objects.get(user = user).studentID
         year = self.kwargs['year']
-        return  QF.objects.annotate(gain = Count('activity_qf',filter = Q(activity_qf__joined_students__studentID = studentID)\
+        return  QF.objects.annotate(gain = Count('activity_qf',filter = Q(activity_qf__joined_students__user = user)\
             & Q(activity_qf__year = year))).values('QF_name','gain')
 
 class AdvisedStudentsList(generics.ListAPIView):

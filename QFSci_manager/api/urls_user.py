@@ -35,7 +35,7 @@ urlpatterns = [
     path('api/student/QF/<str:pk>', QFStudentGainAPI.as_view()),
     path('api/student/QF', QFStudentGainUserAPI.as_view()),
     path('api/student/QF/<str:pk>/<int:year>', QFStudentYearGainAPI.as_view()),
-    path('api/student/QF/year/<int:year>', QFStudentYearGainUserAPI.as_view()),
+    path('api/student/QF-year/<int:year>', QFStudentYearGainUserAPI.as_view()),
     path('api/advisor/advised-students', AdvisedStudentsList.as_view()),
     path('api/advisor/advised-students/<str:pk>', AdvisedStudentProfile.as_view()),
     path('api/advisor/advised-students-participation-stat', AdvisedStudentParticipationStatAPI.as_view()),
