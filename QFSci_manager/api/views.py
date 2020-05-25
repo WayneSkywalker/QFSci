@@ -455,7 +455,8 @@ class ActivityHoursYearUserAPI_test(generics.ListAPIView): #####################
         user = self.request.user
         if Student.objects.filter(user = user).exists():
             student = Student.objects.get(user = user)
-            year_code = int(student.studentID[:2])
+            studentID = student.studentID
+            year_code = int(studentID[:2])
             year_1 = year_code + 2500
             year_2 = year_code + 2501
             year_3 = year_code + 2502
