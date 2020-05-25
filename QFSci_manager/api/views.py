@@ -406,7 +406,7 @@ class ActivityHoursUserAPI(generics.RetrieveAPIView): #
     queryset = Student.objects.all()
     serializer_class = ActivityHoursSerializer
 
-    def get_queryset(self):
+    def get_object(self):
         user = self.request.user
         return Student.objects.annotate(activity_hours = Sum('join_activity__activity_hour')).get(user = user)
 
