@@ -274,13 +274,13 @@ class ActivityHoursYearSerializer(serializers.ModelSerializer):
 class ActivityHoursYearSerializer_test(serializers.ModelSerializer): ##############################################
     activity_hours_year_1 = serializers.IntegerField()
     activity_hours_year_2 = serializers.IntegerField()
-    # activity_hours_year_3 = serializers.IntegerField()
-    # activity_hours_year_4 = serializers.IntegerField()
+    activity_hours_year_3 = serializers.IntegerField()
+    activity_hours_year_4 = serializers.IntegerField()
 
     class Meta:
         model = Student
-        # fields = ('activity_hours_year_1','activity_hours_year_2','activity_hours_year_3','activity_hours_year_4',)
-        fields = ('activity_hours_year_1','activity_hours_year_2',)
+        fields = ('activity_hours_year_1','activity_hours_year_2','activity_hours_year_3','activity_hours_year_4',)
+        # fields = ('activity_hours_year_1','activity_hours_year_2',)
 
 class QFStudentGainSerializer(serializers.ModelSerializer):
     gain = serializers.IntegerField()

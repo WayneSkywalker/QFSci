@@ -465,7 +465,7 @@ class ActivityHoursYearUserAPI_test(generics.RetrieveAPIView): #################
             #     activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0),\
             #     activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_3)),0),\
             #     activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_4)),0)).get(user = user)
-            return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_1)),0), activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0)).get(user = user)
+            return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_1)),0), activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0), activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_3)),0), activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_4)),0)).get(user = user)
         raise NotFound('This student does not exist.')
 
 class QFStudentGainAPI(generics.ListAPIView):
