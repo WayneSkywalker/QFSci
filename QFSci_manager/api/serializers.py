@@ -271,7 +271,7 @@ class ActivityHoursYearSerializer(serializers.ModelSerializer):
         model = Student
         fields = ('year', 'activity_hours_gain','activity_hours_need',)
 
-class ActivityHoursYearSerializer_test(serializers.ModelSerializer): ##############################################
+class ActivityHoursYearSerializer_2(serializers.ModelSerializer): ##############################################
     activity_hours_year_1 = serializers.IntegerField()
     activity_hours_year_2 = serializers.IntegerField()
     activity_hours_year_3 = serializers.IntegerField()

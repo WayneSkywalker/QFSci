@@ -10,7 +10,7 @@ from .serializers import EvaluateQFStudentSerializer, EvaluateQFActivitySerializ
 from .serializers import UserRegisterSerializer, AdminRegisterSerializer, AdvisorRegisterSerializer, StudentRegisterSerializer, StaffRegisterSerializer, StaffAdminRegisterSerializer
 from .serializers import UserEditSerializer, StudentUserEditSerializer, AdvisorEditSerializer, StudentEditSerializer, StaffEditSerializer
 from .serializers import LoginSerializer, ChangePasswordSerializer
-from .serializers import ActivityHoursYearSerializer_test
+from .serializers import ActivityHoursYearSerializer_2
 from django.db.models import Sum, Count, Q
 from django.db.models.functions import Coalesce
 from knox.models import AuthToken
@@ -443,13 +443,34 @@ class ActivityHoursYearsUserAPI(generics.ListAPIView):
                 activity_hours_need =  25 - Sum('activity_hour')).order_by()
         raise NotFound('This student does not exist.')
 
-class ActivityHoursYearUserAPI_test(generics.RetrieveAPIView): ######################################
+class ActivityHoursYearsAPI_2(generics.RetrieveAPIView):
     permission_classes = [
         permissions.IsAuthenticated
         #permissions.AllowAny
     ]
     queryset = Student.objects.all()
-    serializer_class = ActivityHoursYearSerializer_test
+    serializer_class = ActivityHoursYearSerializer_2
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        if Student.objects.filter(studentID = pk).exists():
+            student = Student.objects.get(pk = pk)
+            studentID = student.studentID
+            year_code = int(studentID[:2])
+            year_1 = year_code + 2500
+            year_2 = year_code + 2501
+            year_3 = year_code + 2502
+            year_4 = year_code + 2503
+            return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_1)),0), activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0), activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_3)),0), activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_4)),0)).get(pk = pk)
+        raise NotFound('This student does not exist.')
+
+class ActivityHoursYearUserAPI_2(generics.RetrieveAPIView): ######################################
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    queryset = Student.objects.all()
+    serializer_class = ActivityHoursYearSerializer_2
 
     def get_object(self):
         user = self.request.user
@@ -461,10 +482,6 @@ class ActivityHoursYearUserAPI_test(generics.RetrieveAPIView): #################
             year_2 = year_code + 2501
             year_3 = year_code + 2502
             year_4 = year_code + 2503
-            # return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_1)),0),\
-            #     activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0),\
-            #     activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_3)),0),\
-            #     activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_4)),0)).get(user = user)
             return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_1)),0), activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0), activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_3)),0), activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_4)),0)).get(user = user)
         raise NotFound('This student does not exist.')
 
