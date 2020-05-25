@@ -443,7 +443,7 @@ class ActivityHoursYearsUserAPI(generics.ListAPIView):
                 activity_hours_need =  25 - Sum('activity_hour')).order_by()
         raise NotFound('This student does not exist.')
 
-class ActivityHoursYearUserAPI_test(generics.ListAPIView): ######################################
+class ActivityHoursYearUserAPI_test(generics.RetrieveAPIView): ######################################
     permission_classes = [
         permissions.IsAuthenticated
         #permissions.AllowAny
@@ -461,10 +461,10 @@ class ActivityHoursYearUserAPI_test(generics.ListAPIView): #####################
             year_2 = year_code + 2501
             year_3 = year_code + 2502
             year_4 = year_code + 2503
-            # return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = 2560)),0),\
-            #     activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = 2561)),0),\
-            #     activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = 2562)),0),\
-            #     activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = 2563)),0)).get(user = user)
+            return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_1)),0),\
+                activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0),\
+                activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_3)),0),\
+                activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_4)),0)).get(user = user)
         raise NotFound('This student does not exist.')
 
 class QFStudentGainAPI(generics.ListAPIView):
