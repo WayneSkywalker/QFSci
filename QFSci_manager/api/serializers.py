@@ -7,7 +7,7 @@ from knox.models import AuthToken
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username','first_name','last_name','user_type')
+        fields = ('id','username','first_name','last_name','user_type')
 
 # User Serializer for registeration
 class UserRegisterSerializer(serializers.ModelSerializer):
