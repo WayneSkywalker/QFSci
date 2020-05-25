@@ -451,7 +451,7 @@ class ActivityHoursYearUserAPI_test(generics.ListAPIView): #####################
     queryset = Student.objects.all()
     serializer_class = ActivityHoursYearSerializer_test
 
-    def get_queryset(self):
+    def get_object(self):
         user = self.request.user
         if Student.objects.filter(user = user).exists():
             student = Student.objects.get(user = user)
