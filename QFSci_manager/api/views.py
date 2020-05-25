@@ -1,5 +1,5 @@
 from QFSci_manager.models import User, Student, Advisor, Staff, Activity, QF, Evaluate_QF_student, Evaluate_QF_activity
-from rest_framework import viewsets, permissions, generics, filters
+from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException, ParseError, PermissionDenied, NotFound
 from .serializers import UserSerializer, AdvisorSerializer, StudentSerializer, StaffSerializer, QFSerializer, ActivitySerializer
@@ -9,7 +9,7 @@ from .serializers import ActivityBudgetSerializer, ActivityBudgetLastSixYearsSer
 from .serializers import EvaluateQFStudentSerializer, EvaluateQFActivitySerializer
 from .serializers import UserRegisterSerializer, AdminRegisterSerializer, AdvisorRegisterSerializer, StudentRegisterSerializer, StaffRegisterSerializer, StaffAdminRegisterSerializer
 from .serializers import UserEditSerializer, StudentUserEditSerializer, AdvisorEditSerializer, StudentEditSerializer, StaffEditSerializer
-from .serializers import LoginSerializer
+from .serializers import LoginSerializer, ChangePasswordSerializer
 from django.db.models import Sum, Count, Q
 from knox.models import AuthToken
 
@@ -173,8 +173,8 @@ class StaffRegisterAPI(generics.GenericAPIView):
 class AdminRegisterAPI(generics.GenericAPIView):
     permission_classes = [
         #permissions.IsAuthenticated
-        permissions.AllowAny
-        #permissions.IsAdminUser
+        #permissions.AllowAny
+        permissions.IsAdminUser
     ]
     serializer_class = StaffAdminRegisterSerializer
 
@@ -225,6 +225,30 @@ class LoginAPI(generics.GenericAPIView):
             'user': UserSerializer(user, context = self.get_serializer_context()).data,
             'token': token
         })
+
+class ChangePasswordAPI(generics.UpdateAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+        #permissions.IsAdminUser
+    ]
+    model = User
+    serializer_class = ChangePasswordSerializer
+
+    def get_object(self, queryset = None):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data = request.data)
+
+        if serializer.is_valid():
+            if not self.object.check_password(serializer.data.get('old_password')):
+                return Response({'old_password': ['Password is not correct.']}, status=status.HTTP_400_BAD_REQUEST)
+            self.object.set_password(serializer.data.get('new_password'))
+            self.object.save()
+            return Response('Change password successfully', status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class UserAPI(generics.RetrieveAPIView):
     permission_classes = [
