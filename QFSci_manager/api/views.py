@@ -248,7 +248,7 @@ class ChangePasswordAPI(generics.UpdateAPIView):
                 return Response({'old_password': ['Password is not correct.']}, status=status.HTTP_400_BAD_REQUEST)
             self.object.set_password(serializer.data.get('new_password'))
             self.object.save()
-            return Response('Change password successfully', status = status.HTTP_200_OK)
+            return Response({'new_password' : ['Change password successfully']}, status = status.HTTP_200_OK)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class UserAPI(generics.RetrieveAPIView):
