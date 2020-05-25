@@ -9,9 +9,10 @@ from .serializers import ActivityBudgetSerializer, ActivityBudgetLastSixYearsSer
 from .serializers import EvaluateQFStudentSerializer, EvaluateQFActivitySerializer
 from .serializers import UserRegisterSerializer, AdminRegisterSerializer, AdvisorRegisterSerializer, StudentRegisterSerializer, StaffRegisterSerializer, StaffAdminRegisterSerializer
 from .serializers import UserEditSerializer, StudentUserEditSerializer, AdvisorEditSerializer, StudentEditSerializer, StaffEditSerializer
-from .serializers import LoginSerializer
-from .serializers import ChangePasswordSerializer
+from .serializers import LoginSerializer, ChangePasswordSerializer
+from .serializers import ActivityHoursYearSerializer_test
 from django.db.models import Sum, Count, Q
+from django.db.models.functions import Coalesce
 from knox.models import AuthToken
 
 class DynamicSearchFilter(filters.SearchFilter):
@@ -440,6 +441,29 @@ class ActivityHoursYearsUserAPI(generics.ListAPIView):
             student = Student.objects.get(user = user)
             return student.join_activity.values('year').annotate(activity_hours_gain = Sum('activity_hour'),\
                 activity_hours_need =  25 - Sum('activity_hour')).order_by()
+        raise NotFound('This student does not exist.')
+
+class ActivityHoursYearUserAPI_test(generics.ListAPIView): ######################################
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    queryset = Student.objects.all()
+    serializer_class = ActivityHoursYearSerializer_test
+
+    def get_queryset(self):
+        user = self.request.user
+        if Student.objects.filter(user = user).exists():
+            student = Student.objects.get(user = user)
+            year_code = int(student.studentID[:2])
+            year_1 = year_code + 2500
+            year_2 = year_code + 2501
+            year_3 = year_code + 2502
+            year_4 = year_code + 2503
+            return Student.objects.annotate(activity_hours_year_1 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_1)),0),\
+                activity_hours_year_2 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_2)),0),\
+                activity_hours_year_3 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_3)),0),\
+                activity_hours_year_4 = Coalesce(Sum('join_activity__activity_hour', filter = Q(join_activity__year = year_4)),0)).get(user = user)
         raise NotFound('This student does not exist.')
 
 class QFStudentGainAPI(generics.ListAPIView):
