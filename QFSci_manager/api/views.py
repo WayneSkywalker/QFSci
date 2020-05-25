@@ -398,6 +398,18 @@ class ActivityHoursAPI(generics.RetrieveAPIView):
     def get_queryset(self):
         return Student.objects.annotate(activity_hours = Sum('join_activity__activity_hour'))
 
+class ActivityHoursUserAPI(generics.RetrieveAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    queryset = Student.objects.all()
+    serializer_class = ActivityHoursSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Student.objects.annotate(activity_hours = Sum('join_activity__activity_hour')).filter(user = user)
+
 class ActivityHoursYearsAPI(generics.ListAPIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -410,6 +422,22 @@ class ActivityHoursYearsAPI(generics.ListAPIView):
         pk = self.kwargs['pk']
         if Student.objects.filter(studentID = pk).exists():
             student = Student.objects.get(pk = pk)
+            return student.join_activity.values('year').annotate(activity_hours_gain = Sum('activity_hour'),\
+                activity_hours_need =  25 - Sum('activity_hour')).order_by()
+        raise NotFound('This student does not exist.')
+
+class ActivityHoursYearsUserAPI(generics.ListAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    queryset = Student.objects.all()
+    serializer_class = ActivityHoursYearSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if Student.objects.filter(user = user).exists():
+            student = Student.objects.get(user = user)
             return student.join_activity.values('year').annotate(activity_hours_gain = Sum('activity_hour'),\
                 activity_hours_need =  25 - Sum('activity_hour')).order_by()
         raise NotFound('This student does not exist.')
@@ -427,6 +455,19 @@ class QFStudentGainAPI(generics.ListAPIView):
         return QF.objects.annotate(gain = Count('activity_qf',filter = Q(activity_qf__joined_students__studentID = pk)))\
             .values('QF_name','gain')
 
+class QFStudentGainUserAPI(generics.ListAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    queryset = QF.objects.all()
+    serializer_class = QFStudentGainSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return QF.objects.annotate(gain = Count('activity_qf',filter = Q(activity_qf__joined_students__user = user)))\
+            .values('QF_name','gain')
+
 class QFStudentYearGainAPI(generics.ListAPIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -439,6 +480,20 @@ class QFStudentYearGainAPI(generics.ListAPIView):
         pk = self.kwargs['pk']
         year = self.kwargs['year']
         return  QF.objects.annotate(gain = Count('activity_qf',filter = Q(activity_qf__joined_students__studentID = pk)\
+            & Q(activity_qf__year = year))).values('QF_name','gain')
+
+class QFStudentYearGainUserAPI(generics.ListAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+        #permissions.AllowAny
+    ]
+    queryset = QF.objects.all()
+    serializer_class = QFStudentGainSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        year = self.kwargs['year']
+        return  QF.objects.annotate(gain = Count('activity_qf',filter = Q(activity_qf__joined_students__user = user)\
             & Q(activity_qf__year = year))).values('QF_name','gain')
 
 class AdvisedStudentsList(generics.ListAPIView):

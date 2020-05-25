@@ -11,7 +11,7 @@ from .views import StudentQFDepartmentYearStatAPI, StudentQFFacultyYearStatAPI, 
 from .views import StudentParticipantFacultyStatAPI, StudentParticipationDepartmentStatAPI, StudentParticipantYearStatAPI
 from .views import StudentParticipantDepartmentYearStatAPI, StudentParticipantFacultyYearStatAPI
 from .views import EvaluateQFStudentAPI, EvaluateQFActivityAPI
-from .views import ChangePasswordAPI
+from .views import ChangePasswordAPI, ActivityHoursUserAPI, ActivityHoursYearsUserAPI, QFStudentGainUserAPI, QFStudentYearGainUserAPI
 from knox import views as knox_views
 
 urlpatterns = [
@@ -29,9 +29,13 @@ urlpatterns = [
     path('api/profile', ProfileAPI.as_view()),
     path('api/profile/change-password', ChangePasswordAPI.as_view()),
     path('api/student/activity-hours/<str:pk>', ActivityHoursAPI.as_view()),
+    path('api/student/activity-hours', ActivityHoursUserAPI.as_view()),
     path('api/student/activity-hours-per-year/<str:pk>', ActivityHoursYearsAPI.as_view()),
+    path('api/student/activity-hours-per-year', ActivityHoursYearsUserAPI.as_view()),
     path('api/student/QF/<str:pk>', QFStudentGainAPI.as_view()),
+    path('api/student/QF', QFStudentGainUserAPI.as_view()),
     path('api/student/QF/<str:pk>/<int:year>', QFStudentYearGainAPI.as_view()),
+    path('api/student/QF/year/<int:year>', QFStudentYearGainUserAPI.as_view()),
     path('api/advisor/advised-students', AdvisedStudentsList.as_view()),
     path('api/advisor/advised-students/<str:pk>', AdvisedStudentProfile.as_view()),
     path('api/advisor/advised-students-participation-stat', AdvisedStudentParticipationStatAPI.as_view()),
