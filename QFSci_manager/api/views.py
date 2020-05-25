@@ -456,8 +456,7 @@ class ActivityHoursYearUserAPI_test(generics.ListAPIView): #####################
         if Student.objects.filter(user = user).exists():
             student = Student.objects.get(user = user)
             studentID = student.studentID
-            if studentID is None:
-                raise ParseError('studentID')
+            raise ParseError(studentID)
             year_code = int(studentID[:2])
             year_1 = year_code + 2500
             year_2 = year_code + 2501
