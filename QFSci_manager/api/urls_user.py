@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import StudentRegisterAPI, AdvisorRegisterAPI, StaffRegisterAPI, AdminRegisterAPI
-from .views import LoginAPI, UserAPI, ProfileAPI, StudentEditAPI, AdvisorEditAPI, StaffEditAPI, ChangePasswordAPI
+from .views import LoginAPI, UserAPI, ProfileAPI, StudentEditAPI, AdvisorEditAPI, StaffEditAPI
 from .views import ActivityList, ActivityDetail, CreateActivityAPI, ActivityHoursAPI, ActivityHoursYearsAPI
 from .views import QFsInOneActivityAPI, QFGotActivityList, QFGotActivityYearList, ActivityQFStatAPI, ActivityQFYearStatAPI
 from .views import ActivityBudgetYearAPI, MostBudgetUsedActivities, ActivityBudgetLastSixYearsAPI
@@ -11,6 +11,7 @@ from .views import StudentQFDepartmentYearStatAPI, StudentQFFacultyYearStatAPI, 
 from .views import StudentParticipantFacultyStatAPI, StudentParticipationDepartmentStatAPI, StudentParticipantYearStatAPI
 from .views import StudentParticipantDepartmentYearStatAPI, StudentParticipantFacultyYearStatAPI
 from .views import EvaluateQFStudentAPI, EvaluateQFActivityAPI
+# from .views import ChangePasswordAPI
 from knox import views as knox_views
 
 urlpatterns = [
@@ -26,7 +27,7 @@ urlpatterns = [
     path('api/admin/advisors/edit/<str:pk>', AdvisorEditAPI.as_view()),
     path('api/admin/staffs/edit/<str:pk>', StaffEditAPI.as_view()),
     path('api/profile', ProfileAPI.as_view()),
-    path('api/profile/change-password', ChangePasswordAPI.as_view()),
+    # path('api/profile/change-password', ChangePasswordAPI.as_view()),
     path('api/student/activity-hours/<str:pk>', ActivityHoursAPI.as_view()),
     path('api/student/activity-hours-per-year/<str:pk>', ActivityHoursYearsAPI.as_view()),
     path('api/student/QF/<str:pk>', QFStudentGainAPI.as_view()),

@@ -9,7 +9,8 @@ from .serializers import ActivityBudgetSerializer, ActivityBudgetLastSixYearsSer
 from .serializers import EvaluateQFStudentSerializer, EvaluateQFActivitySerializer
 from .serializers import UserRegisterSerializer, AdminRegisterSerializer, AdvisorRegisterSerializer, StudentRegisterSerializer, StaffRegisterSerializer, StaffAdminRegisterSerializer
 from .serializers import UserEditSerializer, StudentUserEditSerializer, AdvisorEditSerializer, StudentEditSerializer, StaffEditSerializer
-from .serializers import LoginSerializer, ChangePasswordSerializer
+from .serializers import LoginSerializer
+# from .serializers import ChangePasswordSerializer
 from django.db.models import Sum, Count, Q
 from knox.models import AuthToken
 
@@ -226,29 +227,29 @@ class LoginAPI(generics.GenericAPIView):
             'token': token
         })
 
-class ChangePasswordAPI(generics.UpdateAPIView):
-    permission_classes = [
-        permissions.IsAuthenticated
-        #permissions.AllowAny
-        #permissions.IsAdminUser
-    ]
-    model = User
-    serializer_class = ChangePasswordSerializer
+# class ChangePasswordAPI(generics.UpdateAPIView):
+#     permission_classes = [
+#         permissions.IsAuthenticated
+#         #permissions.AllowAny
+#         #permissions.IsAdminUser
+#     ]
+#     model = User
+#     serializer_class = ChangePasswordSerializer
 
-    def get_object(self, queryset = None):
-        return self.request.user
+#     def get_object(self, queryset = None):
+#         return self.request.user
 
-    def update(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        serializer = self.get_serializer(data = request.data)
+#     def update(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         serializer = self.get_serializer(data = request.data)
 
-        if serializer.is_valid():
-            if not self.object.check_password(serializer.data.get('old_password')):
-                return Response({'old_password': ['Password is not correct.']}, status=status.HTTP_400_BAD_REQUEST)
-            self.object.set_password(serializer.data.get('new_password'))
-            self.object.save()
-            return Response('Change password successfully', status = status.HTTP_200_OK)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+#         if serializer.is_valid():
+#             if not self.object.check_password(serializer.data.get('old_password')):
+#                 return Response({'old_password': ['Password is not correct.']}, status=status.HTTP_400_BAD_REQUEST)
+#             self.object.set_password(serializer.data.get('new_password'))
+#             self.object.save()
+#             return Response('Change password successfully', status = status.HTTP_200_OK)
+#         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class UserAPI(generics.RetrieveAPIView):
     permission_classes = [
