@@ -408,7 +408,7 @@ class ActivityHoursUserAPI(generics.RetrieveAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Student.objects.annotate(activity_hours = Sum('join_activity__activity_hour')).filter(user = user)
+        return Student.objects.filter(user = user).annotate(activity_hours = Sum('join_activity__activity_hour'))
 
 class ActivityHoursYearsAPI(generics.ListAPIView):
     permission_classes = [
